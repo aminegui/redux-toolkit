@@ -16,11 +16,9 @@ export const reservationSlice = createSlice({
     addGest: (state, action: PayloadAction<string>) => {
        state.value.push(action.payload)
     },
-    deleteGest: (state, action: PayloadAction<string>) => {
-        let index = state.value.indexOf(action.payload);
-        if (index > -1) {
-          state.value.splice(index, 1);
-        }
+    deleteGest: (state, action: PayloadAction<number>) => {
+
+          state.value.splice(action.payload, 1);
      },
   },
 })

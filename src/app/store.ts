@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reservationsReducer from '../features/reservationSlice';
-
+import openedTableReducer from '../features/openedTableSlice';
 export const store = configureStore({
   reducer: {
-reservations: reservationsReducer 
+reservations: reservationsReducer,
+openedTable: openedTableReducer
   },
 })
 

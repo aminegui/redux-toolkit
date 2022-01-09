@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "./App.css";
-import { RootState } from './app/store'
-import { useSelector, useDispatch } from 'react-redux'
-import { addGest, deleteGest } from './features/reservationSlice'
+import { RootState } from "./app/store";
+import { useSelector, useDispatch } from "react-redux";
+import { addGest } from "./features/reservationSlice";
+import ReservationCard from "./components/ReservationCard";
+import CustomerFoodCard from "./components/CustomerFoodCard";
 function App() {
-  const gestsName = useSelector((state: RootState) => state.reservations.value)
-  const dispatch = useDispatch()
-  const [name, setName]=useState("")
-  const [canseled, setCanseled] = useState("")
+  const gestsName = useSelector((state: RootState) => state.reservations.value);
+  const tables = useSelector((state: RootState) => state.openedTable.value);
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
   return (
     <div className="App">
       <div className="container">
@@ -15,27 +17,33 @@ function App() {
           <div>
             <h5 className="reservation-header">Reservations</h5>
             <div className="reservation-cards-container">
-                 {
-                   gestsName.map(gest=>(<div onClick={()=>dispatch(deleteGest(gest))} className="reservation-card-container">{gest}</div>))
-                 }
+              {gestsName.map((gest, index) => (
+                <ReservationCard index={index} gest={gest} />
+              ))}
             </div>
           </div>
           <div className="reservation-input-container">
-            <input value={name} onChange={e => setName(e.target.value)}/>
-            <button onClick={()=>{dispatch(addGest(name)); setName("")}}>Add</button>
+            <input value={name} onChange={(e) => setName(e.target.value)} />
+            <button
+              onClick={() => {
+                dispatch(addGest(name));
+                setName("");
+              }}
+            >
+              Add
+            </button>
           </div>
         </div>
         <div className="customer-food-container">
-          <div className="customer-food-card-container">
-            <p>Selena Gomez</p>
-            <div className="customer-foods-container">
-              <div className="customer-food"></div>
-              <div className="customer-food-input-container">
-                <input />
-                <button>Add</button>
-              </div>
-            </div>
-          </div>
+          {tables.map((table, index) => 
+            table.gest && (
+              <CustomerFoodCard
+                index={index}
+                gest={table.gest}
+                food={table.food}
+              />
+            )
+          )}
         </div>
       </div>
     </div>
